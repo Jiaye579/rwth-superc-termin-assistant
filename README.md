@@ -1,2 +1,122 @@
-# rwth-superc-termin-assistant
-Local Chrome/Edge assistant for RWTH SuperC appointments: monitor, select, autofill and submit once. CAPTCHA and email confirmation remain manual.
+# RWTH SuperC Termin 助手
+
+供个人使用的 Chrome / Edge 扩展：监测亚琛外管局 **RWTH Studenten / SuperC** 预约，在你设定的条件内选择最早时间，并自动填写预约资料。
+
+An independent, local Chrome / Edge extension for the RWTH SuperC appointment workflow in Aachen. Human verification and email confirmation remain with the user.
+
+**[下载最新版](https://github.com/Jiaye579/rwth-superc-termin-assistant/releases/latest)** · [更新记录](CHANGELOG.md) · [资料与隐私](PRIVACY.md)
+
+本项目与 RWTH、亚琛外管局没有隶属关系。请先阅读[官方 SuperC 分类说明](https://www.staedteregion-aachen.de/de/navigation/aemter/auslaenderamt-a-33/aktuelles/besucherverkehr-in-der-aussenstelle-im-superc)，确认自己适用该预约类别。
+
+## 下载与安装
+
+使用扩展无需安装 Node.js、Python，也无需登录 Telegram。
+
+1. 打开[最新版发布页](https://github.com/Jiaye579/rwth-superc-termin-assistant/releases/latest)，在 **Assets** 中下载 `RWTH-Termin-Assistant-v*.zip`。请选择带此名称的安装包；GitHub 自动生成的 `Source code` 是开发源码。
+2. 解压 ZIP，并保留解压后的文件夹。
+3. Chrome 地址栏打开 `chrome://extensions`；Edge 打开 `edge://extensions`。
+4. 打开 **开发者模式**，点击 **加载已解压的扩展程序**。
+5. 选择解压后的 **`extension` 文件夹**。它里面应直接包含 `manifest.json`。
+6. 从浏览器工具栏的扩展菜单打开 **RWTH SuperC Termin 助手**，建议将其固定到工具栏。
+
+这是浏览器扩展的 ZIP 安装包，需要解压后加载文件夹，没有 EXE 安装程序。Chrome 最低版本为 120；请使用支持 Manifest V3 的 Chrome / Edge。
+
+## 开始使用
+
+1. 填写姓名、邮箱、电话和出生日期；按需补充地址。官网可能把电话和出生年份列为必填项。
+2. 设置可去的日期、星期、时段和排除日期；默认选择最早符合条件的一项。
+3. 阅读适用类别提示，点击 **保存资料与条件**，确认显示保存成功。
+4. 检查 **自动提交预约** 设置，并点击一次 **测试铃声**。
+5. 点击 **开始监测**，保持电脑、浏览器和自动打开的官网标签页运行。
+
+默认检查间隔为 60 秒，每次会加入少量随机等待。关闭扩展设置页后仍可监测；电脑休眠、关机或浏览器退出时会停止。**当前发布版本在本机运行，尚未部署为云端服务。**
+
+## 预约过程
+
+正常流程为：
+
+监测空位 → 选择最早时间 → 确认一次选时弹窗 → 自动填表 → 用户完成验证码与同意项 → 自动提交一次 → 用户确认邮件。
+
+- **选时弹窗**：在本轮选时后，对符合已支持布局的弹窗，按窗口内实际位置点击右侧继续按钮一次。明确错误、验证码、同意项或不匹配的窗口会保留现场。
+- **自动填表**：填写姓名、双邮箱、电话及拆成日／月／年的生日。同一表单只自动填写一次，等待期间保留你的修改。
+- **人工验证**：验证码由你输入，同意项由你阅读并勾选。完成后移出验证码输入框，并补齐必填项；助手会在原页重新核对并继续，无需返回设置页。
+- **自动提交**：默认启用。核对时间、姓名邮箱及表单有效性后，只发送一次预约请求。取消勾选此设置后，由你核对并提交。
+- **邮件确认**：如果官网要求确认链接，需要你及时打开邮件并完成确认。页面选中时间、表单已发送和最终预约成立是不同状态。
+
+发现符合条件的时间时，助手会请求把预约窗口带到前台，并在后台响铃。铃声可以连续响 2 分钟，或持续到你手动关闭。无号时保持安静；超时、网络异常等情况使用静音通知。
+
+**用户反馈：v0.3.1 已在真实流程中自动到达验证码输入页面。** 这验证了到验证码前的一段流程，不能据此视为最终预约成功，也不代表所有官网页面都已完成真实验证。
+
+## 卡住时自动留档
+
+设置页中的 **卡住时自动留档** 会记录页面步骤、字段结构、按钮和停止原因。可选截图需点击 **启用自动截图（浏览器授权）**。
+
+Chrome 的自动截图接口要求较宽的可选权限，授权框会显示 **所有网站**。本项目的截图代码仍只对本轮绑定的外管局官网标签页运行，并在截图前后核对网址与活动标签；不能完成核对时不保存图片。不开启截图也可以使用预约功能，并保留可获取的结构诊断。
+
+截图和诊断只保存在扩展本地存储中，最多保留最近 6 条，图片容量达到上限时可能少于 6 条。可在设置页查看、下载 JPG 和 JSON；常规无号检查不截图。
+
+截图可能包含姓名、邮箱、电话或验证码。分享前请自行遮盖；不要把含个人资料、验证码或会话信息的原始文件上传到公开 Issue。详见 [PRIVACY.md](PRIVACY.md)。
+
+## 更新已有安装
+
+1. 下载并解压新版安装包，先保存自己尚未保存的设置。
+2. 将新版 `extension` 内的文件覆盖到原先加载的 `extension` 文件夹。
+3. 在扩展管理页点击 **重新加载**，重新打开设置页，核对并保存资料后再开始。
+
+**无需卸载旧扩展。** 卸载会清除它保存在浏览器内的数据。更新后的内容脚本在新加载的官网页面生效；如果你正在填写有效预约，请先处理当前表单，避免为更新而刷新丢失进度。
+
+## 使用边界
+
+- 仅管理一张绑定的官网预约页。请避免在同一浏览器中同时用其他标签页操作同一预约系统，以免影响共享会话。
+- 浏览器重启或扩展重新加载后会暂停，需要检查后手动继续。
+- 发送最终请求前会先保存提交记录。若结果不明，请先核对官网与邮箱，不要直接重复提交；只有确认没有预约成功后，再使用设置页的重置选项。
+- 工具不识别验证码、不自动勾选同意项，不提供排队绕过、代理轮换或批量占号功能。
+- 是否有号、网站改版、会话状态、网络及同时预约的人数都会影响结果，无法保证抢到号。
+
+## 资料与权限
+
+预约资料、运行状态、提交记录和可选诊断保存在 `chrome.storage.local`，不使用浏览器云同步。扩展没有项目服务器、统计跟踪或第三方上传；启动后按你的设置把预约资料填写、提交给外管局官网。
+
+| 权限 | 用途 |
+| --- | --- |
+| `storage` | 保存本机设置、运行与提交记录、诊断 |
+| `alarms` | 安排下次检查与页面超时检查 |
+| `notifications` | 显示本机通知 |
+| `offscreen` | 设置页关闭后继续播放铃声 |
+| 外管局官网访问权限 | 在指定官方预约流程中识别、填写和点击 |
+| 可选 `<all_urls>` | 经你启用后调用浏览器自动截图接口 |
+
+截图授权可在设置页撤销。**清除扩展内资料和诊断截图** 会停止监测并清除保存的预约资料与诊断；提交防重记录仍保留，需按结果核实后的重置流程处理。已经填入官网的内容和已经下载的文件需要另行处理。详情见 [资料与隐私](PRIVACY.md)。
+
+## 开发与验证
+
+开发需要 Node.js 20+，普通用户安装扩展无需 Node.js。扩展运行时没有第三方库依赖。
+
+```sh
+npm test
+npm run build
+npm run preview
+```
+
+`npm run build` 生成 `release/RWTH-Termin-Assistant-v0.3.1.zip` 和 `SHA256SUMS.txt`，仅包含 14 个扩展文件和 2 份安装说明；不打包个人调试记录或历史安装包。打包结果可重复构建，并另有归档与隐私排除测试。
+
+`npm test` 运行 Node 测试。预览服务仅监听本机；启动后打开：
+
+- 设置页演示：`http://127.0.0.1:8765/`
+- DOM 测试：`http://127.0.0.1:8765/tests/browser.html`
+- 控制器模拟：`http://127.0.0.1:8765/tests/integration.html`
+- 真实资料页结构模拟：`http://127.0.0.1:8765/tests/real-form-integration.html`
+
+预览使用虚构资料与模拟 Chrome API，不连接外管局或创建预约。
+
+v0.3.1 的本地验证记录为 **61 项 Node 测试、52 项 DOM 测试、13 项控制器模拟流程**。截图接口通过模拟验证；自动提交的模拟流程只触发一次最终请求。这些测试与上述用户反馈都不能替代最终预约结果的核对。
+
+另外新增 10 项打包回归测试。本次 Windows 上的全部 Node 检查为 70 项通过、1 项因文件符号链接权限跳过，无失败。
+
+核心文件：`extension/core.js` 负责筛选规则，`adapter.js` 负责页面识别，`content.js` 负责自动操作，`background.js` 负责状态与定时任务，`diagnostics.js` 负责本地留档。
+
+## 相关链接
+
+- [官方预约入口](https://termine.staedteregion-aachen.de/auslaenderamt/select2?md=1)
+- [官方 SuperC 分类说明](https://www.staedteregion-aachen.de/de/navigation/aemter/auslaenderamt-a-33/aktuelles/besucherverkehr-in-der-aussenstelle-im-superc)
+- [aachen-termin-bot](https://github.com/noworneverev/aachen-termin-bot)：独立的民间 Telegram 放号通知项目。本工具独立编写，不依赖其频道。

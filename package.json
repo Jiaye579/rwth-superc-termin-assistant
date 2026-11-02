@@ -1,0 +1,7 @@
+{
+  "name": "rwth-superc-termin-assistant",
+  "version": "0.3.1",
+  "private": true,
+  "description": "Local browser extension for the RWTH SuperC appointment workflow",
+  "scripts": {"test": "node --test tests/core.test.cjs tests/background.test.cjs tests/sound.test.cjs tests/diagnostics.test.cjs tests/release.test.cjs", "preview": "node tools/dev-server.cjs", "build": "node tools/build-release.cjs"}
+}

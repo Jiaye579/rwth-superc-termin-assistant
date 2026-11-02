@@ -1,0 +1,14 @@
+node_modules/
+*.log
+test-results/
+private/
+*.zip
+/release/
+/observations/
+/RWTH-Termin-Assistant-v*/
+/screenshots/
+/diagnostics/
+/browser-profile/
+.env
+.env.*
+*.pem
