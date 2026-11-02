@@ -1,0 +1,63 @@
+<!-- Minimal reconstruction of the observed SuperC step 5 on 2026-11-02.
+     All entered values, CAPTCHA content and session tokens are omitted.
+     The image is a local placeholder, not a CAPTCHA challenge. No official scripts. -->
+<main id="inhalt">
+  <h1>Schritt 5 von 6: Eingabe der persönlichen Daten</h1>
+  <details id="details_infobox" open>
+    <summary id="infobox_summary">Übersicht zu Ihrem Termin</summary>
+    <dl>
+      <dt>Funktionseinheit</dt><dd>Ausländer- und Staatsangehörigkeitsbehörde</dd>
+      <dt>Anliegen</dt><dd><ul id="info_box_cnc_list"><li>1 Mal RWTH Studenten</li></ul></dd>
+      <dt>Standort</dt><dd>Ausländeramt Aachen - Außenstelle RWTH, Templergraben 57, 52062 Aachen</dd>
+      <dt>Termin</dt><dd>11.11.2026, 09:00 Uhr</dd>
+      <dt>Persönliche Daten</dt><dd>noch nicht gesetzt</dd>
+    </dl>
+  </details>
+  <h2>Ausländer- und Staatsangehörigkeitsbehörde - Eingabe der persönlichen Daten für den Termin</h2>
+  <p>Ihr Termin: 11.11.2026, 09:00 Uhr</p>
+  <form id="cal-reservation" method="post" action="/auslaenderamt/personaldata">
+    <p>Pflichtfelder sind mit Pflichtfeld gekennzeichnet.</p>
+    <label for="vorname">Vorname Pflichtfeld*</label>
+    <input id="vorname" name="vorname" type="text" autocomplete="given-name" maxlength="200" required>
+    <label for="nachname">Nachname * Pflichtfeld</label>
+    <input id="nachname" name="nachname" type="text" autocomplete="family-name" maxlength="200" required>
+    <label for="email">E-Mail * Pflichtfeld</label>
+    <p class="email-help">Ihre E-Mail-Adresse wird zur Bestätigung benötigt. Sie erhalten nach Absenden des Formulars einen Link per E-Mail. Diesen müssen Sie bestätigen. Erst dann gilt der Termin als gebucht.</p>
+    <input id="email" name="email" type="email" autocomplete="email" maxlength="100" required>
+    <label for="emailwhlg">E-Mail - Wiederholung * Pflichtfeld</label>
+    <input id="emailwhlg" name="emailCheck" type="email" autocomplete="email" maxlength="100" required>
+    <label for="phone">Telefonnummer * Pflichtfeld</label>
+    <input id="phone" name="phone" type="tel" autocomplete="tel" aria-required="true" required>
+    <p>Geburtsdatum * Pflichtfeld. Bitte tragen Sie mindestens das 4-stellige Geburtsjahr ein.</p>
+    <div id="geb">
+      <label for="geburtsdatumDay">Tag</label>
+      <input id="geburtsdatumDay" name="geburtsdatumDay" type="number" min="0" max="31" autocomplete="bday-day">
+      <label for="geburtsdatumMonth">Monat</label>
+      <input id="geburtsdatumMonth" name="geburtsdatumMonth" type="number" min="0" max="12" autocomplete="bday-month">
+      <label for="geburtsdatumYear">Jahr</label>
+      <input id="geburtsdatumYear" name="geburtsdatumYear" type="number" min="0" max="2026" autocomplete="bday-year" required>
+    </div>
+    <label for="comment">Bemerkungen</label>
+    <textarea id="comment" name="comment" maxlength="2000"></textarea>
+    <input id="hunangskrukka" name="hunangskrukka" type="text" style="display:none" tabindex="-1" aria-hidden="true">
+    <label for="captcha_result">Sicherheitsfrage * Pflichtfeld</label>
+    <p>Bitte geben Sie die im Bild dargestellte Zeichenfolge ein. Sie müssen diese Sicherheitsabfrage richtig beantworten, um zur nächsten Seite zu gelangen.</p>
+    <div id="captcha_control">
+      <img id="captcha_image" width="140" height="40" alt="Sicherheitsabfrage (Testplatzhalter)" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='40'%3E%3Crect width='140' height='40' fill='%23eeeeee'/%3E%3C/svg%3E">
+    </div>
+    <div id="captcha_input">
+      <label for="captcha_result">Ergebnis der Sicherheitsabfrage:</label>
+      <input id="captcha_result" name="captcha_code" type="text" autocomplete="off" maxlength="21" required>
+    </div>
+    <label><input name="agreementChecked" type="checkbox" required>Ich willige in die Verarbeitung meiner Daten zur Online-Terminbuchung für die Wahrnehmung einer Dienstleistung ein. (Rechtsgrundlage Art. 6 Abs. 1 Buchst. a) Datenschutzgrundverordnung (DS-GVO)) * Pflichtfeld</label>
+    <div id="privacy_dialog" role="dialog" aria-label="Hinweisfenster" hidden>
+      <h1>Titel</h1><p>Datenschutzhinweise zur Einwilligungserklärung.</p>
+      <p>Bitte bestätigen Sie Ihre E-Mail über den Bestätigungslink.</p>
+      <p>Ihr Termin wurde erfolgreich gebucht.</p>
+      <button type="button">Schliessen</button>
+    </div>
+    <input id="zurueck" type="button" value="Zurück zu den Terminvorschlägen">
+    <input id="chooseTerminButton" name="submit" type="submit" value="Reservieren">
+    <p>Sie können nun zum nächsten Schritt der Terminreservierung gehen.</p>
+  </form>
+</main>
