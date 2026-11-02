@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RWTH SuperC · Termin 助手</title>
+  <link rel="stylesheet" href="options.css">
+  <script defer src="core.js"></script><script defer src="options.js"></script>
+</head>
+<body>
+  <main>
+    <header><div class="brand">RWTH <span>SUPERC</span></div><span class="local">● 资料保存在本地浏览器</span></header>
+    <div class="intro"><p class="eyebrow">让下一次放号，少几步操作</p><h1>你的 Termin，提前准备好。</h1><p>监测空位 → 选择最早时间 → 确认选时弹窗 → 自动填写 → 自动提交一次</p></div>
+    <div id="preview" class="notice" hidden>这是本地演示，使用虚构资料；不会连接外管局或创建预约。正式使用请在 Chrome／Edge 中加载 extension 文件夹。</div>
+    <div class="layout">
+      <form id="settings" class="card">
+        <div class="card-heading"><span class="number">01</span><div><h2>预约资料</h2><p>按护照填写姓名。邮箱用于接收官网的确认邮件。</p></div></div>
+        <div class="grid">
+          <label>姓 / Nachname<input name="lastName" autocomplete="family-name" required placeholder="例如 WANG"></label>
+          <label>名 / Vorname<input name="firstName" autocomplete="given-name" required placeholder="例如 Xiaoming"></label>
+          <label class="wide">邮箱 / E-Mail<input name="email" type="email" autocomplete="email" required placeholder="你的常用邮箱"></label>
+          <label>出生日期<input name="birthDate" type="date" autocomplete="bday"><span class="hint">真实官网要求出生年份；会自动拆成日、月、年填写。</span></label>
+          <label>电话<input name="phone" type="tel" autocomplete="tel" placeholder="+49 …"><span class="hint">真实官网为必填项，提前保存可减少现场操作。</span></label>
+        </div>
+        <details><summary>地址与补充表单字段（按需填写）</summary>
+          <div class="grid details-grid">
+            <label>街道<input name="street" autocomplete="address-line1"></label><label>门牌号<input name="houseNumber"></label>
+            <label>邮编<input name="postalCode" autocomplete="postal-code"></label><label>城市<input name="city" autocomplete="address-level2"></label>
+            <label class="wide">精确字段映射（JSON）<textarea name="extraFields" rows="3" spellcheck="false" placeholder='{"官网 input 的 name":"填写内容"}'></textarea><span class="hint">遇到无法识别的字段时再添加。不自动勾选声明、同意项或填写验证码。</span></label>
+          </div>
+        </details>
+        <div class="divider"></div>
+        <div class="card-heading"><span class="number">02</span><div><h2>可去的时间</h2><p>在符合以下条件的空位中，始终选择最早的一项。</p></div></div>
+        <div class="grid">
+          <label>最早日期<input name="from" type="date"><span class="hint">留空：从今天开始</span></label>
+          <label>最晚日期<input name="until" type="date"><span class="hint">留空：不限日期</span></label>
+          <label>每天开始时间<input name="after" type="time" required value="00:00"></label>
+          <label>每天结束时间<input name="before" type="time" required value="23:59"></label>
+        </div>
+        <fieldset class="weekdays"><legend>可预约星期 · Europe/Berlin</legend>
+          <label><input type="checkbox" name="weekday" value="1" checked>一</label><label><input type="checkbox" name="weekday" value="2" checked>二</label><label><input type="checkbox" name="weekday" value="3" checked>三</label><label><input type="checkbox" name="weekday" value="4" checked>四</label><label><input type="checkbox" name="weekday" value="5" checked>五</label><label><input type="checkbox" name="weekday" value="6">六</label><label><input type="checkbox" name="weekday" value="0">日</label>
+        </fieldset>
+        <div class="grid">
+          <label class="wide">不能去的日期<input name="excludedDates" placeholder="2026-11-10, 2026-11-12"><span class="hint">用逗号或换行分隔。</span></label>
+          <label class="wide">检查间隔<select name="interval"><option value="60">60 秒 · 推荐</option><option value="30">30 秒</option><option value="120">2 分钟</option><option value="300">5 分钟</option></select><span class="hint">每轮加入少量随机等待。浏览器关闭或电脑休眠期间无法监测。</span></label>
+        </div>
+        <label class="eligibility"><input type="checkbox" name="eligible" required><span>我确认自己适用 <b>RWTH Studenten / SuperC</b>，且不是刚从其他城市外管局转入的情况。</span></label>
+        <label class="eligibility"><input type="checkbox" name="autoSubmit" checked><span><b>自动提交预约</b>：选好时间、填完资料且核对通过后，直接提交一次。先填普通资料；等你完成验证码、同意项及缺失资料后，在原页自动继续。</span></label>
+        <label style="margin-top:18px">铃声持续时间<select name="alarmDuration"><option value="120">连续响 2 分钟</option><option value="0">一直响，直到我手动关闭</option></select><span class="hint">发现符合条件的时间时在后台播放，不需要保持设置页打开。监测异常只显示静音通知；浏览器退出时无法播放。</span></label>
+        <div class="save-row"><button class="primary" type="submit">保存资料与条件</button><span id="save-result" role="status"></span></div>
+        <p class="privacy">仅当你启动助手后，资料才会填入绑定的外管局官网标签页。扩展无服务器、不向 Telegram 或其他服务发送资料；本地存储未单独加密。</p>
+      </form>
+      <aside>
+        <section class="card status-card"><div class="status-top"><h2>运行状态</h2><span id="phase" class="pill">待开始</span></div><p id="run-message" class="run-message">保存资料后即可开始。</p><div id="selected" class="selected" hidden></div>
+          <dl class="stats"><div><dt>已检查</dt><dd id="checks">0 次</dd></div><div><dt>下一次</dt><dd id="next">—</dd></div></dl>
+          <button id="start" class="primary block" type="button">开始监测</button>
+          <div class="button-pair"><button id="resume" type="button">继续当前页面</button><button id="stop" type="button">暂停</button></div>
+          <button id="open" class="text-button" type="button">打开官网预约标签页 ↗</button>
+          <button id="reset-submission" class="text-button" type="button" hidden>已核实没有预约成功，允许重新监测</button>
+          <p class="hint">只管理一张预约页。选时后自动点击弹窗右下角蓝色继续按钮，每轮最多一次，然后填写资料。自动提交仅发送一次；验证码、同意项及确认邮件仍需你处理。</p>
+        </section>
+        <section class="card"><h2>铃声提醒</h2><p class="small">仅发现符合条件的时间时启动长铃；测试按钮也会播放。无号时保持安静。超时、网络异常或需要接手只显示静音通知。同一轮后续通知不会重启铃声。</p><div class="button-pair"><button id="sound" type="button">测试铃声 ♫</button><button id="stop-sound" type="button">关闭铃声</button></div><p id="sound-result" class="hint" role="status"></p></section>
+        <section class="card"><h2>卡住时自动留档</h2><p class="small">等待验证码、遇到未知弹窗或需要接手时，自动保留诊断。截图和记录只存在此浏览器，保留最近 6 条，可下载后发来排查。</p><button id="enable-capture" type="button">启用自动截图（浏览器授权）</button><p id="capture-permission" class="hint" role="status"></p><p class="hint">Chrome 原生截图要求“所有网站”权限；本工具只截绑定的外管局官网标签页，截图前后都会核对。截图可能包含表单资料与验证码，请按需分享。</p><div id="diagnostics"></div></section>
+        <section class="card log-card"><h2>最近记录</h2><ol id="log"><li>尚无记录</li></ol></section>
+        <div class="help"><p>等待验证码或弹窗时，在官网处理，完成后助手会自动继续。若已暂停，再点“继续当前页面”。</p><p>“选中时间”不等于“预约成功”。以官网结果及确认邮件为准。</p><button id="clear" class="text-button" type="button">清除扩展内资料和诊断截图</button><p class="hint">清除后，已经填入官网的内容及已下载的文件仍需你自行清理。</p></div>
+      </aside>
+    </div>
+    <footer>独立的个人预约辅助工具 · 非 RWTH 或外管局官方产品 · v0.3.1</footer>
+  </main>
+</body></html>
