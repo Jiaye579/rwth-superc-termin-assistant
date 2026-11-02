@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "RWTH SuperC Termin 助手",
+  "version": "0.3.1",
+  "description": "本地监测 RWTH 学生预约、选择最早时间、自动填写并提交一次，支持长铃声提醒。",
+  "minimum_chrome_version": "120",
+  "icons": {"128": "icon.png"},
+  "permissions": ["storage", "alarms", "notifications", "offscreen"],
+  "host_permissions": ["https://termine.staedteregion-aachen.de/*"],
+  "optional_host_permissions": ["<all_urls>"],
+  "background": {"service_worker": "background.js"},
+  "action": {"default_title": "打开 RWTH Termin 助手"},
+  "options_page": "options.html",
+  "content_scripts": [{
+    "matches": ["https://termine.staedteregion-aachen.de/auslaenderamt/*"],
+    "js": ["core.js", "adapter.js", "content.js"],
+    "run_at": "document_idle"
+  }]
+}
